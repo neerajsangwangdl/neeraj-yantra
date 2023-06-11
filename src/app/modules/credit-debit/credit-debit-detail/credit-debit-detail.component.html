@@ -1,0 +1,81 @@
+<app-header></app-header>
+<br>
+<div class="container" id="contentToConvert">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3><strong>{{type ? 'Retailer' : 'Saleman'}}: <u>{{creditDebitList && creditDebitList.length ?
+                        creditDebitList[0]['cname'] : ''}}</u></strong></h3>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <ul class="m-0 p-0">
+                    <li class="list-unstyled" *ngFor="let creditDebit of creditDebitList | groupByDate:'CreatedOn'">
+                        <hr>
+                        <div class="row">
+                            <h6 class="date bg-dark text-white rounded font-italic">{{creditDebit['date'] | date:
+                                'mediumDate'}} -- {{creditDebit['date'] | timeAgo}}</h6>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <ul class="card-ul w-100">
+                                <li class="card-li"
+                                    ngClass="{'credit': item.ledger_type > 0, 'debit': item.ledger_type < 0, 'deleted border-light': item.IsDelete}"
+                                    *ngFor="let item of creditDebit.arr">
+                                    <span class="m-0 ft-30"
+                                        ngClass="{'green-text': item.ledger_type > 0, 'text-red': item.ledger_type < 0}">
+                                        <i class="fa ft-19"
+                                            ngClass="{'fa-arrow-down': item.ledger_type > 0, 'fa-arrow-up': item.ledger_type < 0}"
+                                            aria-hidden="true"></i>
+                                        Rs. {{item.Amount}}
+                                    </span>
+                                    <br><small>Order:
+                                        <a href="javascript:void(0)" *ngIf="user && user.Role <= 8"
+                                            [routerLink]="['/emp-access/order-detail/', item.order_id]"
+                                            routerLinkActive="router-link-active"><u>
+                                                {{item.order_id}}</u></a>
+                                        <a href="javascript:void(0)" *ngIf="user && user.Role > 8"
+                                            [routerLink]="['/order/order-detail/', item.order_id]"
+                                            routerLinkActive="router-link-active"><u>
+                                                {{item.order_id}}</u></a> <span *ngIf="item.quantity">/
+                                            ({{item.quantity}})--{{item.pname}}</span>
+                                    </small>
+                                    <br><small>For: {{item.cname}}</small>
+                                    <!-- <br><small>Balance: {{item.Balance && item.Balance > 0 ?
+                                        item.Balance + ' Advanced' : -item.Balance + ' Due'}}, </small> -->
+                                    <a class="" href="javascript:void(0);"
+                                        (click)="OrderService.getPendingOrderForCustomerAndSendWhatsapp(item.customer_id, item.mob_phone, item.cname)">
+                                        <i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                                    </a>
+                                    <br>
+                                    <!-- routerLink="[item.payment_recieved_by]" [queryParams]="{flag: 1}" -->
+                                    <small *ngIf="item.ledger_type > 0" class="text-muted">Recieved By:<a
+                                            href="javascript:void(0)"
+                                            routerLinkActive="router-link-active">{{item.payment_recieved_by_name}}</a>
+                                        , {{item.credit_debit_created_on |
+                                        date:'mediumTime'}}</small>
+                                    <small *ngIf="item.ledger_type < 0" class="text-muted">Action By:<a
+                                            href="javascript:void(0)" routerLink="[item.saleman_id]"
+                                            [queryParams]="{flag: 1}"
+                                            routerLinkActive="router-link-active">{{item.sname}}</a>
+                                        , {{item.credit_debit_created_on |
+                                        date:'mediumTime'}}</small>
+
+
+                                    <!-- &nbsp;<i class="fa fa-trash cursor-p" aria-hidden="true"
+                                        (click)="deleteLedger(item.credit_debit_id)"></i> -->
+
+                                    <hr class="m-0">
+                                    <br><small>ApniDukan Balance: {{item.Balance && item.Balance > 0 ?
+                                        item.Balance + ' Advanced' : -item.Balance + ' Due'}}, </small>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,14 @@
+
+<ng-container class="text-center" *ngIf="isHomePage; else elseTemplate">
+        <input type="number" value="1" aria-label="Search" class="form-control d-none" style="width: 100px" [(ngModel)]="quantity" >
+        <button [ngClass]="{'add-to-cart-sm': buttonsize === 'small', 'add-to-cart-xs': buttonsize === 'Xsmall', 'add-to-cart': buttonsize === 'med'}" class="btn text-white btn-primary" (click)="onAddProductToCart()">ADD TO CART
+                <i class="fa fa-shopping-cart"></i>
+        </button>
+</ng-container>
+<ng-template class="text-center" #elseTemplate>
+        <input  type="number" value="1" aria-label="Search" class="form-control" style="width: 100px" [(ngModel)]="quantity" >
+        <button class="btn btn-primary text-white btn-md my-0 p" type="button" (click)="onAddProductToCart()">Add to cart
+                <i class="fa fa-shopping-cart ml-1"></i>
+            </button>
+</ng-template>
+

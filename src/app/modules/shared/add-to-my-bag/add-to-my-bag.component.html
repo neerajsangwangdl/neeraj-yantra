@@ -1,0 +1,3 @@
+<input type="number" value="1" aria-label="Search" class="form-control d-none" style="width: 100px"
+        ngModel="quantity">
+<button [ngClass]="{'add-to-cart-sm': buttonsize === 'small', 'add-to-cart-xs': buttonsize === 'Xsmall', 'add-to-cart': buttonsize === 'med'}" class="btn text-white btn-warning"title="add in saleman's bag" (click)="onAddProductToBag()">ADD TO BAG</button>

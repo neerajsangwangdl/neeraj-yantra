@@ -1,0 +1,52 @@
+<app-carousel *ngIf="productList && productList.productList && productList.productList.length"
+   [carouselProductsData]="productList"></app-carousel>
+<!-- <div calss="row"> 
+<div class="text-center d-sm-block d-md-block ">
+   <a href="upi://pay?pa=paytmqr281005050101i59jwvlwuuy1@paytm&amp;pn=Neeraj Kumar Sangwan&amp;mc=tDeNAT16775760775882&amp;tr=20210923111212800110168205244985985&amp;cu=INR"
+      class="btn btn-primary waves-effect">Make a UPI Payment Now !</a>
+   <a class="btn btn-warning waves-effect" *ngIf="user" target="_blank"
+      href="https://wa.me/?text={{user.name}}, Apne Dost ko Register Karao is link se or uske phle order pe pao 5 DataCabel 3Amp Bilkul Free!! https://apnidukan.yantraworld.in/customer/register?refId={{user.customer_id}}">
+      <strong class="text-white">Refer & Earn </strong>
+      <i class="fa fa-whatsapp wa-product" aria-hidden="true"></i>
+   </a>
+</div>
+</div> -->
+
+
+
+<!-- <h4>Choose a Department</h4>
+
+<div class="list-group">
+   <a class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let item of departmentList;index as i" [ngClass]="{'active': selectedDepartment == item.DepartmentId}"
+      (click)="onSelectDepartment(item)">
+      <div class="d-flex w-100 justify-content-between">
+         <h6 class="mb-1">{{item.Name}}</h6>
+      </div>
+   </a>
+</div> -->
+
+<!-- <div class="row">
+   <div class="dropdown">
+      <label for="SubCategoryId" class="text-uppercase" placement="top"
+      ngbTooltip="kis SubCategory ka product hai ye">Select Category </label>
+      
+    <select class="form-select form-select-md mb-3" aria-label=".form-select-lg example" [ngModel]="SubcategoryId">
+      <option selected>Select Categories</option>
+      <option [selected]="item.SubCategoryId == SubcategoryId" [value]="item.SubCategoryId"
+      *ngFor="let item of filteredSubCategoryList">
+      {{item.Name}}</option>
+    </select>
+</div>
+</div> -->
+
+
+
+<div class="form-group mt-6" *ngIf="filteredSubCategoryList && filteredSubCategoryList.length">
+   <select [(ngModel)]="Subcategory" class="form-control" name="userId" class="btn btn-secondary"
+      (ngModelChange)="onSelectSubCategory($event)">
+      <option value="">Select Category</option>
+      <option [selected]="item['SubCategoryId'] == Subcategory['SubCategoryId']" [ngValue]="item" *ngFor="let item of filteredSubCategoryList">
+         {{item.Name}}</option>
+   </select>
+</div>

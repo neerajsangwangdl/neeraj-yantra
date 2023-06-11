@@ -1,0 +1,118 @@
+<header>
+    <app-header></app-header>
+</header>
+<section class="register-block notification">
+    <div class="container">
+        <div class="row register-sec">
+            <div class="col-xs-12 m-auto">
+                <h2 class="text-center">Notification Insert Form</h2>
+            </div>
+            <form class="register-form col-md-12" [formGroup]="NotificationInsertForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <div class="form-group ">
+                            <label for="notification_name" placement="top"
+                                ngbTooltip="Notification ka Naam">Notification name
+                                <i class="fa fa-info-circle cursor-p" aria-hidden="true"></i></label>
+                            <input type="text" class="form-control is-invalid" formControlName="notification_name"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.notification_name.errors }">
+
+                            <div *ngIf="submitted && f.notification_name.errors" class="invalid-feedback">
+                                <div *ngIf="f.notification_name.errors.required">Name is required</div>
+                                <div *ngIf="f.notification_name.errors.maxlength">Only fifty characters are allowed</div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <div class="form-group">
+                            <label for="notification_description" placement="top"
+                                ngbTooltip="Description is product ka">Description <i class="fa fa-info-circle cursor-p"
+                                    aria-hidden="true"></i></label>
+                            <input type="text" class="form-control" formControlName="notification_description"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.notification_description.errors}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-2">
+                        <div class="form-group mt-1">
+                            <!-- <label class="form-check-label cursor-p" for="flexSwitchCheckChecked" *ngIf="flagSwitch">For All
+                                Users</label>
+                            <label class="form-check-label cursor-p" for="flexSwitchCheckChecked" *ngIf="!flagSwitch"> For
+                                Some
+                                Users </label>&nbsp;&nbsp;
+                            <input class="form-check-input" type="checkbox" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="flagSwitch" id="flexSwitchCheckChecked" checked> -->
+                            <div class="form-check-inline">
+                                <input class="form-check-input"  (change)="notification_broadcast_type(1)"   [value]="1" [checked]="noti_broadcast_type == 1" [(ngModel)]="noti_broadcast_type"
+                                [ngModelOptions]="{standalone: true}" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1">&nbsp;&nbsp;
+                                <label class="form-check-label cursor-p" for="flexRadioDefault1">
+                                    All Employes
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input"  (change)="notification_broadcast_type(2)"  [value]="2" [checked]="noti_broadcast_type == 2" [(ngModel)]="noti_broadcast_type"
+                                [ngModelOptions]="{standalone: true}" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault2" >&nbsp;&nbsp;
+                                <label class="form-check-label cursor-p" for="flexRadioDefault2">
+                                    EveryBody
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input"  (change)="notification_broadcast_type(3)" [value]="3" [checked]="noti_broadcast_type == 3" [(ngModel)]="noti_broadcast_type" 
+                                [ngModelOptions]="{standalone: true}" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault3">&nbsp;&nbsp;
+                                <label class="form-check-label cursor-p" for="flexRadioDefault3">
+                                    Select Customer
+                                </label>
+                            </div>
+                            <div class="form-group mt-2" *ngIf="noti_broadcast_type==3">
+                                <ng-multiselect-dropdown class="w-100" [placeholder]="'Select User'"
+                                    [settings]="customerListdropdownSettings" [data]="customerList"
+                                    (onDeSelect)="onSelect($event)" (onSelect)="onSelect($event)"
+                                    (onSelectAll)="onSelectAll()">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <div class="form-group mt-1">
+                            <label for="notification_type" placement="top"
+                                ngbTooltip="Notification ka type Select karo">Select Type of Notification
+                                <i class="fa fa-info-circle cursor-p" aria-hidden="true"></i></label>
+                            <select type="text" id="" class="form-control is-invalid" aria-label=".form-select-lg"
+                                formControlName="notification_type" class="form-control fw-bold mt-2"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.notification_type.errors,
+                                'text-primary border-primary':f.notification_type.value==1, 'text-success border-success': f.notification_type.value==2,
+                                'text-warning border-warning': f.notification_type.value==3,'text-danger border-danger': f.notification_type.value==4}">
+                                <option class="text-primary" [value]="1">Information dena chahte ho</option>
+                                <option class="text-success" [value]="2">Joyful message dena chahte ho</option>
+                                <option class="text-warning" [value]="3">Warning dena chahte ho</option>
+                                <option class="text-danger" [value]="4">Danger dena chahte ho</option>
+                            </select>
+                            <div *ngIf="submitted && f.notification_type.errors" class="invalid-feedback">
+                                <div *ngIf="f.notification_type.errors.required">Notification type is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-check">
+                    <button class="btn btn-danger pull-right mt-2"
+                        *ngIf="submitted && NotificationInsertForm.invalid">Error
+                        in the form</button>
+                    <button type="submit" class="btn btn-register pull-right mt-2"
+                        *ngIf="!submitted || !NotificationInsertForm.invalid">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<app-notification-listfor-admin></app-notification-listfor-admin>
+
+<!-- notification list page code -->

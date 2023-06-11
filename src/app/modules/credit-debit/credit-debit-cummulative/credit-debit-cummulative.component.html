@@ -1,0 +1,131 @@
+<app-header></app-header>
+<br>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3><strong><u>Insert Ledger</u></strong></h3>
+        </div>
+        <div *ngIf="submitted && !f.amount.errors" class="ft-19 col-md-12 text-primary">
+            <strong>{{f.action_for.value[0]['name']}} ko aap Rs.{{f.amount.value}} {{f.type.value == 'credit' ?
+                'Recieved Kar rhe ho' : f.type.value == 'debit' ? 'Ka Maal diya hai' : 'Ka discount Diy hai'}}</strong>
+        </div>
+        <div class="col-md-12">
+            <form class="register-form" [formGroup]="ledgerForm" (ngSubmit)="onSubmitForm()">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="action_for" class="text-uppercase">customer</label>
+                         <ng-multiselect-dropdown class="w-100" formControlName="action_for"
+                            (onFilterChange)='searchModelChanged.next($event)' [settings]="dropdownSettings"
+                            [data]="customerList">
+                        </ng-multiselect-dropdown>
+                        <div *ngIf="submitted && f.action_for.errors" class="text-danger">
+                            <div *ngIf="f.action_for.errors.required">customer is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="amount" class="text-uppercase">Amount</label>
+                        <input type="number" class="form-control" formControlName="amount">
+                        <div *ngIf="submitted && f.amount.errors" class="text-danger">
+                            <div *ngIf="f.amount.errors.required">Amount is required</div>
+                            <div *ngIf="f.amount.errors.min">Min value is 1</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="description" class="text-uppercase">Note</label>
+                        <input type="text" formControlName="description" class="form-control"
+                            ngClass="{ 'is-invalid': submitted && f.description.errors }" />
+                    </div>
+                    <div class="form-group col-md-4 display-6">
+                        <input class="form-group" formControlName="type" [value]="'credit'" type="radio"
+                            id="flexRadioDefault1">
+                        <label class="form-group mr- text-success" for="flexRadioDefault1">
+                            Recieved
+                        </label>
+                    </div>
+                    <div class="form-group col-md-4 display-6">
+                        <input class="form-group" [checked]="true" formControlName="type" [value]="'debit'" type="radio"
+                            id="flexRadioDefault2">
+                        <label class="form-group mr- text-danger" for="flexRadioDefault2">
+                            Given
+                        </label>
+                    </div>
+                    <div class="form-group col-md-4 display-6">
+                        <input class="form-group" formControlName="type" [value]="'discount'" type="radio"
+                            id="flexRadioDefault3">
+                        <label class="form-group mr- text-warning" for="flexRadioDefault3">
+                            Discount
+                        </label>
+                    </div>
+                    <div class=" col-md-12 pull-right mt-2">
+                        <button type="submit" class="btn btn-danger pull-right mb-5">Save Ledger</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr class="hr-2">
+        <div class="col-md-12 text-center">
+            <h3><strong><u>Ledger All Customer </u></strong>
+                <label class="switch">
+                    <input type="checkbox"  [(ngModel)]="ledgerToggle" (ngModelChange)="filterLedger($event)">
+                    <span class="slider round"></span>
+                </label>
+            </h3>
+
+        </div>
+        <div class="col-md-12">
+            <ul class="m-0 p-0">
+                <li class="list-unstyled" *ngFor="let creditDebit of creditDebitList | groupByDate:'o_created_on'">
+                    <hr>
+                    <div class="row">
+                        <h6 class="date bg-dark text-white rounded font-italic">{{creditDebit['date'] | date:
+                            'mediumDate'}} -- {{creditDebit['date'] | timeAgo}}</h6>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <ul class="card-ul w-100">
+                            <li class="card-li credit" ngClass="{'deleted border-light': item.IsDelete}"
+                                *ngFor="let item of creditDebit.arr">
+                                <span class="m-0 ft-30 cursor-p"
+                                    [routerLink]="['/credit-debit/audit/', item.customer_id]" [queryParams]="{flag: 0}"
+                                    ngClass="{'green-text': item.Balance <= 0, 'text-red': item.Balance > 0}">
+                                    {{item.cname}}
+                                    <small>{{item.Balance && item.Balance > 0 ?
+                                        item.Balance + ' Due' : -item.Balance + ' Advanced'}}, </small>
+                                </span>
+                                <a class="" href="javascript:void(0);"
+                                    (click)="OrderService.getPendingOrderForCustomerAndSendWhatsapp(item.customer_id, item.mob_phone, item.cname)">
+                                    <i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                                </a>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fa ft-19 fa-arrow-up text-red" aria-hidden="true"></i>
+                                    Last order
+                                    <a href="javascript:void(0)" *ngIf="user && user.Role <= 8"
+                                        [routerLink]="['/emp-access/order-detail/', item.order_id]"
+                                        routerLinkActive="router-link-active"><u>
+                                            {{item.order_id}}</u>
+                                    </a>,
+                                    {{item.o_created_on | timeAgo}} On {{item.o_created_on | date}},
+                                </small>
+                                <small class="text-muted">
+                                    <i class="fa ft-19 fa-arrow-down green-text" aria-hidden="true"></i>
+                                    Last Payment {{item.Amount}},
+                                    <a href="javascript:void(0)" *ngIf="item.OrderId"
+                                        [routerLink]="['/emp-access/order-detail/', item.OrderId]"
+                                        routerLinkActive="router-link-active"><u>
+                                            {{item.OrderId}}</u>
+                                    </a>
+                                    <span *ngIf="item.pd_created_on">
+                                        {{item.pd_created_on | timeAgo}} On {{item.pd_created_on | date}},
+                                    </span>
+                                    <span *ngIf="!item.pd_created_on">
+                                        Never Recieved,
+                                    </span>
+                                </small>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>

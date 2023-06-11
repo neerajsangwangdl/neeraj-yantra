@@ -1,0 +1,24 @@
+<app-marquee></app-marquee>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1 offset-xs-11 pull-right">
+      <div class="dropdown pull-right">
+        <button class=" sortbybtn dropdown-toggle bg-pink" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Sort By
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="sortBy('ASC')">Price:Low to high</a></li>
+          <li><a class="dropdown-item" (click)="sortBy('DESC')">Price:High to low</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="text-center pb-3 mb-5 mt-1 h-100">
+  <div class=" row search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+    (scrolled)="onScroll()">
+    <app-product-card *ngFor="let product of productList" [productData]="product"
+      class=" col-md-4 col-lg-3 col-sm-6 mb-3 row-eq-height"></app-product-card>
+  </div>
+</section>

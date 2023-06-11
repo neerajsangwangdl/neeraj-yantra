@@ -1,0 +1,76 @@
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
+}
+.target-block {
+    background: #DE6262;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #3f4c6b, #3f4c6b);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #3f4c6b, #3f4c6b);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    float: left;
+    width: 100%;
+    padding: 50px 0;
+    min-height:100vh;
+}
+.target-sec {
+    padding: 30px 30px;
+    position: relative;
+}
+.target-sec h2 {
+    margin-top: -10px;
+    font-weight: 800;
+    font-size: 30px;
+    color: #3f4c6b;
+}
+.target-sec h2:after {
+    content: " ";
+    width: 100px;
+    height: 5px;
+    background: #3f4c6b;
+    display: block;
+    margin-top: 20px;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: auto
+}
+.target{
+    margin-top: 35px;
+    }
+.dates {
+    opacity: 1;
+    // background-color: #eee;
+    // width: 10%;
+    // height: 40%;
+    // line-height: 90px;
+    // text-align: center;
+    // border-radius: 50%;
+    // border: 2px solid #333;
+    // margin-top: 4px;
+    position: absolute;
+    margin-top: 20px;
+    // top: 85%;
+    // right: 77%;
+    transform: translateY(-50%);
+    font-size:small;
+}
+.ft-badge{
+    font-size: 10px;
+    padding-top:0px;
+}
+
+i {
+    font-size: x-large;
+}
+p {
+    // font: optional;
+    font-size:large;
+}
+
+.envelope{
+    i {
+        font-size: large;
+    }
+}

@@ -1,0 +1,40 @@
+<div class="table-responsive-sm" style="max-height: 338px; overflow-y: scroll;">
+  <table class="table">
+    <tbody>
+      <tr *ngFor="let product of bag">
+        <th scope="row" class="border-0">
+          <div class="p-2">
+            <img [src]="product.Thumbnail" [routerLink]="['product-details', product.ProductId]" alt="" width="70"
+              class="img-fluid rounded shadow-sm">
+            <div class="ml-3 d-inline-block align-middle">
+              <h5 class="mb-0">
+                <a href="javascript:void(0);" [routerLink]="['product-details', product.ProductId]"
+                  class="text-dark d-inline-block align-middle">{{product.Name}}</a>
+                <!-- <var class="price">&#8377; {{(product.Price * product.Quantity).toFixed(1)}}</var> -->
+                <small class="text-muted">(&#8377; {{product.Price.toFixed(1)}} each)</small>
+              </h5>
+              <!-- <span class="text-muted font-weight-normal font-italic d-block ml-2">
+                <span class="badge purple mr-1">{{product.DepartmentName}}</span>
+                <span class="badge blue mr-1">{{product.CategoryName}}</span>
+              </span> -->
+            </div>
+          </div>
+        </th>
+        <!-- <td class="border-0 align-middle">
+          <var class="price">&#8377; {{(product.Price * product.Quantity).toFixed(1)}}</var>
+          <small class="text-muted">(&#8377; {{product.Price.toFixed(1)}} each)</small>
+        </td> -->
+        <!-- <td class="border-0 align-middle"><strong>{{product.Quantity}}</strong></td> -->
+        <td class="border-0 align-middle">
+          <!-- <app-add-to-cart [productId]="product.ProductId" [quantity]="product.min_quantity"
+             [isHomePage]="true">
+          </app-add-to-cart> -->
+        </td>
+        <td class="border-0 align-middle"><a (click)="onRemoveProductsFromCart(product.ProductId)" class="text-dark"><i
+              class="fa fa-trash"></i></a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<li class="divider"></li>
+<!-- <li><a class="text-center btn" [routerLink]="[ '/checkout/shopping-cart' ]"><strong>View Cart</strong></a></li> -->

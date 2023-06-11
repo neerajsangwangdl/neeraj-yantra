@@ -1,0 +1,62 @@
+<!-- <app-header></app-header> -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2 class="text-center">OTP</h2>
+            <form class="register-form" [formGroup]="otpForm" (ngSubmit)="onSubmitOTP()">
+                <div class="form-group">
+                    <label for="Reason" class="text-uppercase">Reason</label>
+                    <select class="form-control" formControlName="Reason">
+                        <option value="">Choose OTP Reason</option>
+                        <option value="delivery_received">Delivery Recieved</option>
+                        <option value="delivery_return">Delivery Return</option>
+                        <option value="exchange_product">Exchange Product</option>
+                        <option value="Payment_given">Payment Given</option>
+                        <option value="Payment_return">Payment Return</option>
+                    </select>
+                    <div *ngIf="submitted && f['Reason'].errors" class="invalid-feedback">
+                        <div *ngIf="f['Reason'].errors.required">Reason is required</div>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="loggedUser && loggedUser.Role <= 6">
+                    <label for="created_for" class="text-uppercase">created For</label>
+                    <input type="text" formControlName="created_for" class="form-control"
+                        [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f['created_for'].errors }" />
+                </div>
+                <div class="form-check">
+                    <button type="submit" class="btn btn-secondary pull-right mt-2">Generate</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-8">
+            <form>
+                <div class="row">
+                    <!-- <img src="https://angular-shoppingcart.firebaseapp.com/assets/img/malecostume-512.png" [alt]="loggedUser.FullName"
+                        style="width: 35%; height: 35%;"> -->
+                    <div class="col-md-8 mt-3">
+                        <label for="userName">Name</label>
+                        <p style="font-size: 15px;">{{loggedUser.name}}</p>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label for="emailId">Email</label>
+                        <p style="font-size: 15px;">{{loggedUser.email}}</p>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label for="emailId">Mobile</label>
+                        <p style="font-size: 15px;">{{loggedUser.mob_phone}}</p>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label for="emailId">Country</label>
+                        <p style="font-size: 15px;">India</p>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <hr>
+        <div class="col-12 text-center">
+            <h4 style="text-decoration: underline;"> <strong>Payment QR Code</strong> </h4>
+            <img src="assets/QRcode.jpeg" [alt]="loggedUser.FullName" style="width: 100%; height: 100%;">
+        </div>
+    </div>
+</div>

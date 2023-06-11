@@ -1,0 +1,17 @@
+<div class="container mt-0">
+   <div class="row ">
+      <div class="col-md-12 " style="z-index: 11;">
+         <div class="input-group bg-pink p-3 fixed-top">
+            <input class="form-control" type="text" id="form1"
+               (ngModelChange)='dataService.searchModelChanged.next($event)' placeholder="Search All Products"
+               class="form-control pink-text" [(ngModel)]="dataService.searchString">
+            <i class="fa fa-times cross cursor-pointer" aria-hidden="true" (click)="clear()"></i>
+            <div class="input-group-append cursor-pointer">
+               <a class="input-group-text bg-white" href="javascript:void(0);" (click)="dataService.searchModelChanged.next(dataService.searchString)">
+                  <i class="fa fa-search" aria-hidden="true" ></i>
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

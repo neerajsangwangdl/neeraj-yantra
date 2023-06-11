@@ -1,0 +1,47 @@
+<app-header></app-header>
+<br>
+<div class="container mt-5" *ngIf="user && user.mob_phone">
+    <ul class="list-group mb-3">
+        <li class="list-group-item d-flex lh-condensed" *ngFor="let product of checkoutProducts">
+            <div>
+                <img [src]="product.Thumbnail" [alt]="product.Name" height="100">
+            </div>
+            <div style="padding: 10px" class="pl-5">
+                <h6 class=" my-0"><strong>{{product.Name}}</strong></h6>
+                <strong class="">
+                    <div >
+                        Quantity: {{product.Quantity}}
+                    </div>
+                </strong>
+                <strong class="">
+                    <div class="price">
+                        &#8377; {{product.Price * product.Quantity}}
+                    </div>
+                </strong>
+            </div>
+
+        </li>
+        <hr>
+        <li class="list-group-item d-flex justify-content-between ">
+            <span>Total (INR)</span>
+            <strong class="price">&#8377; {{totalPrice}}</strong>
+        </li>
+
+    </ul>
+    <div class="pull-right mt-2">
+        <a class="btn btn-success " [routerLink]="['/checkout/customer-information']"
+            routerLinkActive="active">Next</a>
+    </div>
+
+</div>
+<div class="container mt-3" *ngIf="!user || !user.mob_phone">
+    <h3>
+        Please Login to Place your order.
+    </h3>
+    <div class="pull-left">
+        <a class="btn btn-info " routerLink="/customer/register">Sign up</a>
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-info " routerLink="/customer/login">Login</a>
+    </div>
+</div>

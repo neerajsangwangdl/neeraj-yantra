@@ -1,0 +1,186 @@
+<app-header></app-header>
+<br>
+<div class="container" id="contentToConvert">
+    <div class="row" *ngIf="orderDetail && orderDetail.length && user && user.Role <= 6">
+        <div class="col-md-12 text-center">
+            <h2><b>Invoice</b><i class="fa fa-file-pdf white" style="color:blue; cursor: pointer"
+                    (click)="getInvoice()"></i>
+            </h2>
+        </div>
+        <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td class="title">
+                                    <img src="assets/yantra-logo.png" style="width: 25%; max-width: 300px" />
+                                </td>
+                                <td>
+                                    <h5>ApniDukan</h5><br />
+                                    Tower 8, Provident Kenworth, Rajender Nagar<br>
+                                    Hyderabad, 500030<br />
+                                    India <br>
+                                </td>
+
+
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="information">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+
+                                <td>
+                                    <p><b>{{orderDetail[0].name}}</b>, <br>
+                                        {{orderDetail[0].address_1}}
+                                    </p>
+                                </td>
+                                <td>
+                                    <b>Contact Sales</b><br />
+                                    <!-- Neeraj<br /> -->
+                                    yantraworld@gmail.com
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <div id="content">
+
+            </div>
+        </div>
+        <!-- </div> -->
+        <div class="col-md-12 pull-left">
+
+        </div>
+    </div>
+    <div class="row" *ngIf="orderDetail && orderDetail.length">
+        <div class="col-md-12">
+            <h6><b>Date: </b> {{orderDetail[0].CreatedOn | date}} </h6>
+            <strong>
+                <h4><b>Order Id: </b> {{orderDetail[0].order_id}} <i class="fa fa-file-pdf white"
+                        *ngIf="user && user.Role > 1" style="color:red; cursor: pointer" (click)="getInvoice()"></i>
+                </h4>
+            </strong>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group rounded">
+                <input type="search" (input)="filterOrder($event)" class="form-control rounded"
+                    placeholder="Search Product in this order" aria-label="Search" aria-describedby="search-addon" />
+            </div>
+        </div>
+        <div class="col-md-12 table-responsive-sm">
+            <table class="table table-striped text-center">
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Order Item Id</th>
+                        <th scope="col">Product Name</th>
+                        <td>Status Name</td>
+
+                        <th scope="col">Qty x Rate</th>
+                        <!-- <th scope="col">Rate</th> -->
+                        <!-- <th scope="col">Status</th> -->
+                        <!-- <th scope="col">PlacedBY</th> -->
+                        <th scope="col">Amount</th>
+                        <th scope="col">ReOrder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of orderDetail; let i = index"
+                        [ngClass]="{'decor-strike': [3,4].indexOf(order.item_status) > -1}">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{order.item_id}}</td>
+                        <td>
+                            <a class="td-link" href="javascript:void(0)"
+                                routerLink="['/products/product-details', order.product_id]">{{order.product_name}}</a>
+                        </td>
+                        <td>{{order.StatusName}}</td>
+                        <td>{{order.quantity}} x {{order.unit_cost}}</td>
+                        <!-- <td></td> -->
+                        <td>{{order.quantity * order.unit_cost}}</td>
+
+
+                        <td>
+                            <!-- <app-add-to-cart class="add-cart" [buttonsize]="'small'" [productId]="order.product_id"
+                                [quantity]="order.min_quantity" [isHomePage]="true">
+                            </app-add-to-cart> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="1"><b>Total Bill:</b> <small> excluding cancelled</small></td>
+                        <td colspan="1"><b>₹ {{globalService.getTotalOfNonCancelledOrderWithDeliveryCharges(orderDetail,
+                                'quantity', 'unit_cost')}} </b> </td>
+                        <td colspan="2">
+                            <a href="upi://pay?pa=paytmqr281005050101i59jwvlwuuy1@paytm&amp;pn=Neeraj Sangwan&amp;cu=INR"
+                                class="btn btn-success waves-effect d-sm-block d-md-block d-lg-none">Pay Now</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="paymentDetail && paymentDetail.length">
+        <div class="col-md-12">
+            <strong>
+                <h4>Payments: {{paymentDetail[0].order_id}}</h4>
+            </strong>
+        </div>
+        <div class="col-md-12 table-responsive-sm">
+            <table class="table table-striped text-center">
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Payment Id</th>
+                        <th scope="col">Payment Date</th>
+                        <th scope="col">Amount Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of paymentDetail; let i = index;">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{order.PaymentId}}</td>
+                        <td>{{order.CreatedOn | date}}</td>
+                        <td>{{order.Amount}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="1"><b>Total Paid:</b> </td>
+                        <td colspan="1"><b>₹ {{PaymentTotal}}</b> </td>
+                    </tr>
+                    <tr *ngIf="totalRem">
+                        <td colspan="2">
+                        </td>
+                        <td colspan="1"><b>Total Remaining:</b> </td>
+                        <td colspan="1"><b>₹ {{totalRem}}</b> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<hr>
+<div class="container" *ngIf="totalRem">
+    <div class="row" *ngIf="!paymentDetail || !paymentDetail.length">
+        <div class="col-md-12 text-center text-danger ">
+            <strong>
+                <h1>Complete Payment Pending.
+                </h1>
+            </strong>
+
+        </div>
+    </div>
+    <!-- <div class="row">
+        <app-payment-submit-admin (refreshPaymentList)="getPaymentDetail()" *ngIf="user && user.Role <= 6"
+            [orderDetailData]="orderDetail" [paymentDetailData]="paymentDetail"></app-payment-submit-admin>
+    </div> -->
+</div>

@@ -1,0 +1,75 @@
+<header>
+  <app-header></app-header>
+</header>
+<section class="notification-block notification">
+  <div class="container">
+    <div class="row notification-sec">
+      <div class="col-xs-12 text-center">
+        <h2> Notification List </h2>
+      </div>
+      <div (click)="markasReadNotificationByCustomerIds(noti)"
+        [ngClass]="{ 'alert-primary':noti.notification_type==1,'alert-success':noti.notification_type==2,'alert-warning':noti.notification_type==3, 'alert-danger':noti.notification_type==4, 'unread': noti.IsRead==0 }"
+        class="alert d-flex align-items-center cursor-p" role="alert" *ngFor="let noti of allNotification">
+        <i class="fa"
+          [ngClass]="{ 'fa-info-circle':noti.notification_type==1,'fa-check':noti.notification_type==2, 'fa-warning':noti.notification_type==3, 'fa-close':noti.notification_type==4 }">
+        </i>
+        <div class="text">
+          <div class="envelope" >
+            <i class="fa" [ngClass]="{'fa-envelope': noti.IsRead==0, 'fa-envelope-open':noti.IsRead==1}"> </i>
+          </div>
+          <div>
+            <!-- <p [ngClass]="{'limitTextHeight':isReadMore}"> {{noti.notification_description}} </p>
+            <button type="button" class="readbtn" (click)="showText()"> 
+              {{isReadMore ? '+' : '-'}} </button> -->
+              <p>{{noti.notification_name}}</p>
+             
+          </div>
+          <div class="dates"> {{ noti.created_on | date : 'medium' }}
+          </div>
+          <div class="timeago"> {{ noti.created_on | timeAgo }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ------------------------------------------------------------------------------------- -->
+<!-- Notification grouped by date -->
+
+<!-- <div>
+  <table class="table text-center" *ngFor="let notifi of allNotification | groupByDate : 'created_on' ">
+    <thead>
+      <tr>
+        <th scope="col" colspan="4">
+          {{notifi['date'] | date: 'longDate'}} --- {{(notifi.arr && notifi.arr.length ? notifi.arr[0]['created_on'] :
+          '0') | timeAgo }}
+        </th>
+      </tr>
+    </thead>
+
+    <thead>
+      <tr>
+        <th> Id</th>
+        <th> Read/Unread</th>
+        <th>Name</th>
+        <th colspan="2">Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let notiDetail of notifi.arr">
+        <td>{{notiDetail.notification_id}}</td>
+
+        <td>
+          <i class="fa" [ngClass]="{'fa-envelope': notiDetail.IsRead==0, 'fa-envelope-open':notiDetail.IsRead==1}"></i>
+        </td>
+
+        <td>{{notiDetail.notification_name}}</td>
+        <td>{{notiDetail.notification_description}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+
+<!-- ------------------------------------------------------------------------------------- -->

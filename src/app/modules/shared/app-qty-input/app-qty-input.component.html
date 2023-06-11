@@ -1,0 +1,8 @@
+<div class="quantity">
+        <input type="button" value="+" class="plus" (click)="onUpdateQuantity(1,  product.ProductId)">
+        <input type="number" step="1" [max]="product.max_quantity" [min]="product.min_quantity"
+                [(ngModel)]="product.Quantity" (input)="onUpdateQuantity(2,  product.ProductId, $event)"
+                title="Qty" class="qty" size="4">
+        <input type="button" value="-" class="minus" [disabled]="product.Quantity == 1"
+                (click)="onUpdateQuantity(0, product.ProductId)">
+</div>

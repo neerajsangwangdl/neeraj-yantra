@@ -1,0 +1,29 @@
+.list-group-item.active {
+    background: #16a085;
+    border: 0px;
+    h6 {
+        color: #fff;
+    }
+}
+.btn-primary{
+    background-color: #16a085 !important;
+}
+.fixed-top {
+    position: fixed;
+    top: 48px;
+    padding: 5px !important;
+    width: 100%;
+    z-index: 1;
+}
+.cross {
+    position: relative;
+    right: 30px;
+    top: 12px;
+    cursor: pointer;
+}
+.cross {
+    position: relative;
+    right: 30px;
+    top: 12px;
+    cursor: pointer;
+}

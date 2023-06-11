@@ -1,0 +1,23 @@
+
+.createbag {
+    padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
+    font-size: var(--bs-navbar-toggler-font-size);
+    line-height: 1;
+    color:#fff;
+    cursor: pointer;
+    background-color: #e91e63;
+    border: var(--bs-border-width) solid var(--bs-navbar-toggler-border-color);
+    // border-radius: var(--bs-navbar-toggler-border-radius);
+    border-radius: 5px;
+    transition: var(--bs-navbar-toggler-transition);
+
+    left: 200px;
+    top: 7px;
+    text-decoration: none;
+    border-color: red;
+}
+
+.addtobag{
+background-color: #e91e63;
+border-color: #e91e63;
+}

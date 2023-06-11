@@ -1,0 +1,173 @@
+<app-header></app-header>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2><u>Bag Management</u></h2>
+        </div>
+        <div class="col-md-12 table-responsive-sm max-h-table">
+            <h4 class="text-center"><strong><u>Current Assigned Orders</u></strong></h4>
+            <table class="table  text-center " *ngIf="SelectedSaleman">
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of orderList; let i = index">
+                        <td class="td-text-mid">
+                            <a class="text-primary font-weight-bold" href="javascript:void(0)"
+                                [routerLink]="['/emp-access/order-detail/' + order.order_id]">{{order.order_id}} </a>
+                            <br>
+                            <br>
+                            <a href="tel:{{order.mob_phone}}">{{order.cName}} <i class="fa fa-phone text-success"
+                                    aria-hidden="true"></i>
+                            </a>
+                            <br>{{order.created_on | date:'medium'}}
+                        </td>
+                        <td class="text"
+                            *ngIf="order.order_details.length && order.assigned_bag_saleman == SelectedSaleman">
+                            {{order.order_details.length}} Item ke
+                            {{globalService.getTotalOfColumn(order.order_details, 'units')}} units
+                            <table class="table bg-light rounded">
+                                <thead class="pink-text">
+                                    <tr>
+                                        <th scope="col">Item Id</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Units</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of order.order_details;">
+                                        <td>{{item.item_id}}</td>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.units}} <i class="fa fa-edit  cursor-p" title="update quantity"
+                                                aria-hidden="true"
+                                                (click)="setupdateOrderQtyByItemID(item)"></i></td>
+                                        <td>{{item.unit_cost}}</td>
+                                        <td><select [(ngModel)]="item.item_status"
+                                                (ngModelChange)='onChangeStatus($event, item)'
+                                                ngClass="{'border-danger': item.item_status == '5','border-success': item.item_status == '6', 'border-dark': [3, 4].indexOf(item.item_status) > -1}"
+                                                name="userId" class="form-control mw-200">
+                                                <option [selected]="item.item_status == obj.StatusId"
+                                                    [ngValue]="obj.StatusId" *ngFor="let obj of status">
+                                                    {{obj.StatusName}}</option>
+                                            </select></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+
+                        <td class="td-text-mid" *ngIf="order.assigned_bag_saleman != SelectedSaleman">
+                            Cant assign because its assigned to {{order.assigned_bag_saleman}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+    <h4 class="text-center"><strong><u>Current Bag</u></strong></h4>
+    <div class="row ">
+        <div class="col-md-12 table-responsive-sm max-h-table">
+            <table class="table  text-center ">
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">Bag Item Id</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Initial Qty</th>
+                        <th scope="col">Delivered Qty</th>
+                        <th scope="col">Returned Qty</th>
+                        <th scope="col">order item ids</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let obj of bagOrderList; let i = index">
+                        <td class="td-text-mid">
+                            <a class="text-primary font-weight-bold" href="javascript:void(0)">{{obj.bag_id}} </a>
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.name}}
+                        </td>
+
+                        <td>{{obj.bag_initial_quantity}}
+                            <i class="fa fa-edit  cursor-p" *ngIf="!obj.is_handover" title="update quantity" aria-hidden="true"
+                                (click)="updateBagInitQtyByBagID(obj.bag_id)"></i>
+                        </td>
+
+                        <td class="td-text-mid">
+                            {{obj.bag_delivered_quantity}}
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.return_units}}
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.bag_item_ids}}
+                        </td>
+                        <td class="td-text-mid" *ngIf="user && user.Role <= 6">
+                            <button class="btn btn-sm btn-secondary"
+                                [disabled]='obj.bag_initial_quantity == obj.bag_delivered_quantity + obj.return_units'
+                                (click)="returnBagItem(obj)">{{(obj.bag_initial_quantity == obj.bag_delivered_quantity +
+                                obj.return_units) ? 'Success' : 'Return'}}</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- Total Item: {{ Object.keys(ProductAndItemList).length}}  -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix">
+            <button class="btn btn-success pull-left" (click)="archievedBags()"
+                *ngIf="bagOrderList && bagOrderList.length">Archieved
+                bag</button>
+            <button class="btn btn-primary float-end" (click)="handoverBagsToSaleman()"
+                *ngIf="bagOrderList && bagOrderList.length">handover Bag To Saleman</button>
+        </div>
+    </div>
+</div>
+<hr>
+<h4 class="text-center"><strong><u> {{pendingItemTobeReturn && pendingItemTobeReturn.length ? 'Pending Bag items' : 'All items returned'}} </u></strong></h4>
+<div class="container" *ngIf="pendingItemTobeReturn && pendingItemTobeReturn.length">
+    <div class="row text-center">
+        <div class="col-md-12 table-responsive-sm max-h-table">
+            <table class="table  text-center ">
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">Bag Id</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Pending Qty</th>
+                        <th scope="col">order item ids</th>
+                        <th scope="col">Created On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let obj of pendingItemTobeReturn; let i = index">
+                        <td class="td-text-mid">
+                            <a class="text-primary font-weight-bold" href="javascript:void(0)">{{obj.bag_id}} </a>
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.name}}
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.bag_initial_quantity - obj.bag_delivered_quantity - obj.return_units}}
+                        </td>
+                        <td class="td-text-mid">
+                            {{obj.bag_item_ids}}
+                        </td>
+                        <td class="td-text-mid" *ngIf="user && user.Role <= 6">
+                            {{obj.created_on | date:'medium'}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- <div *ngIf="!pendingItemTobeReturn ">
+    No pending item
+</div> -->

@@ -1,0 +1,197 @@
+<app-header></app-header>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="form-group" *ngIf="false && salemanList && salemanList.length">
+                    <label for="userId" class="text-uppercase fw-bold">Select Saleman: </label>
+                    <ng-multiselect-dropdown class="w-100" [(ngModel)]="SelectedSalemanUsers"
+                        [placeholder]="'Select Saleman to assign orders'" (ngModelChange)="salemanSelected()"
+                        [settings]="salemanListDropdownSettings" [data]="salemanList">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+            <div class="col-md-4" *ngIf="user && user.Role <= 8">
+                <div class="form-group " *ngIf="customerList && customerList.length">
+                    <label for="userId" class="text-uppercase fw-bold">Select Retailer: </label>
+                    <ng-multiselect-dropdown class="w-100" [(ngModel)]="SelectedUsers"
+                        [placeholder]="'Select Retailer for orderlist'" (ngModelChange)="searchModelChanged.next($event)"
+                        (onSelect)="filterOrdersbyCustomer($event)"
+                        (onDeSelect)="filterOrdersbyCustomer($event)"
+                        [settings]="customerListDropdownSettings" [data]="customerList">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3 mt-0 pb-1 col-md-4">
+                    <label for="userId" class="text-uppercase fw-bold">Filter: </label>
+                    <ng-multiselect-dropdown class="w-100" [(ngModel)]="filterStatus" (ngModelChange)="getOrders()"
+                    [placeholder]="'Select orderlist'" [settings]="dropdownSettings" [data]="status">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-12" *ngIf="user && user.Role <= 8">
+            <div class="form-group">
+                <label for="username" class="">Search Retailer by name, mobile or address: </label>
+                <input type="text" class="form-control" [(ngModel)]='searchText'
+                    (ngModelChange)='searchModelChanged.next($event)' />
+                <hr>
+            </div>
+            <div class="form-group" *ngIf="customerList && customerList.length">
+                <label for="userId" class="text-uppercase">Select Retailer: </label>
+                <label for="userId" class="text-uppercase pull-right" *ngIf="SelectedUser && user && user.Role <= 6"
+                    (click)="passwordReset()"><button class="btn btn-sm btn-outline-primary">Reset Password</button>
+                </label>
+                <select data-live-search="true" [(ngModel)]="SelectedUser" (ngModelChange)='getOrders()'
+                    class="form-control" name="userId" class="form-control">
+                    <option value="">All</option>
+                    <option [ngValue]="item" *ngFor="let item of customerList">{{item.name}}/ {{item.address_1}}/
+                        {{item.mob_phone}} / {{item.password ? item.password : ''}}
+                    </option>
+                </select>
+            </div>
+        </div> -->
+        <!-- <div class="input-group mb-3 col-md-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Count</span>
+            </div>
+            <input type="number" (input)="getOrders()" [(ngModel)]="Count" class="form-control rounded"
+                placeholder="Search Order" aria-label="Search" aria-describedby="search-addon" />
+        </div> -->
+        <!-- <div class="input-group mb-3 col-md-4">
+            <ng-multiselect-dropdown class="w-100" [(ngModel)]="filterStatus" (ngModelChange)="getOrders()"
+                [settings]="dropdownSettings" [data]="status">
+            </ng-multiselect-dropdown>
+        </div> -->
+        <!-- <div class="col-md-12" *ngIf="pendingPayment">
+            <strong>Total Pending Amount: <b>Rs. {{pendingPayment}}</b> </strong>
+        </div> -->
+        <div class="row">
+            <div class="col-md-6" *ngIf="pendingAmountForUser">
+                Pending Amount For {{SelectedUser.name}}:
+                <strong>
+                    <a class="" *ngIf="orderList && orderList.length" href="javascript:void(0);"
+                        (click)="OrderService.getPendingOrderForCustomerAndSendWhatsapp(SelectedUser.customer_id, SelectedUser.mob_phone, SelectedUser.name)">
+                        Rs. {{pendingAmountForUser}}<i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                    </a>
+                </strong>
+            </div>
+            <div class="col-md-6" *ngIf="monthSaleForUser && monthSaleForUser['totalTobePaid']">
+                Last 30days Sale For {{SelectedUser.name}}:
+                <strong>
+                    Orders: Rs. {{monthSaleForUser['totalTobePaid']}},
+                    Payments: Rs. {{monthSaleForUser['TotalPaid']}},
+                </strong>
+            </div>
+        </div>
+        <div class="col-md-12 table-responsive-sm">
+            <table class="table  text-center " *ngFor="let orders of orderList | groupByDate:'created_on'">
+                <thead class="dark-text">
+                    <tr>
+                        <th colspan="4"><strong>{{orders['date'] | date:
+                                'mediumDate'}} -- {{(orders.arr && orders.arr.length ? orders.arr[0]['created_on'] :
+                                '0') | timeAgo }}</strong> ({{orders.arr && orders.arr.length ? orders.arr.length :
+                            '0'}} Orders)</th>
+                    </tr>
+                    <!-- <tr>
+                        <th colspan="4"><strong>{{globalService.getTotalOfNonCancelledOrderWithDeliveryCharges(orders.arr, 'quantity', 'unit_cost')}}</strong></th>
+                    </tr> -->
+                </thead>
+                <thead class="pink-text">
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Pending</th>
+                        <th scope="col">items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of orders.arr; let i = index">
+
+                        <td class="td-text-mid">
+                            <a class="text-primary font-weight-bold" href="javascript:void(0)"
+                                [routerLink]="['/emp-access/order-detail/' + order.order_id]">{{order.order_id}} </a>
+                            <br>
+                            <br>
+                            <a href="tel:{{order.mob_phone}}">{{order.cName}} <i class="fa fa-phone text-success"
+                                    aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="td-text-mid">
+                            {{globalService.getTotalPendingPayments(order.order_details, 'units',
+                            'unit_cost')}}
+                            <a target="_blank" (click)="dataService.copyToClip(globalService.getTotalPendingPayments(order.order_details, 'units',
+                                    'unit_cost'))"> <i (click)="copied = !copied" class="fa fa-clone "
+                                    title="Copy to Share this product" aria-hidden="true"></i></a>
+                        </td>
+                        <td class="td-text-mid">
+                            <a class="nav-link waves-effect"
+                                *ngIf="globalService.getTotalPendingPayments(order.order_details, 'units', 'unit_cost') - order.pAmount > 0"
+                                href="javascript:void(0);"
+                                (click)="OrderService.getPendingOrderForCustomerAndSendWhatsapp(order.customer_id, order.mob_phone, order.cName)">
+                                {{ globalService.getTotalPendingPayments(order.order_details, 'units',
+                                'unit_cost') - order.pAmount}}<i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                            </a>
+                            <a class="nav-link waves-effect"
+                                *ngIf="globalService.getTotalPendingPayments(order.order_details, 'units', 'unit_cost') - order.pAmount <= 0"
+                                href="javascript:void(0);"
+                                (click)="OrderService.getPendingOrderForCustomerAndSendWhatsapp(order.customer_id, order.mob_phone, order.cName)">
+                                0<i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="text" *ngIf="order.order_details.length && showItems[order.order_id]">
+                            <i class="fa fa-times ft-19"
+                                (click)="showItems[order.order_id] = !showItems[order.order_id]"></i>
+                            <i class="fa fa-trash ft-19 pull-right cursor-p" (click)="onCancelCompleteOrder(order)"></i>
+                            <table class="table bg-light rounded">
+                                <thead class="pink-text">
+                                    <tr>
+                                        <th scope="col">Item Id</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Units</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of order.order_details;"
+                                        ngClass="{'decor-strike': [3,4].indexOf(item.item_status) > -1}">
+                                        <td>
+                                            <i class="fa fa-user" *ngIf="item.SalesmanId == item.customer_id"
+                                                aria-hidden="true"></i>
+                                            <i class="fa fa-male" *ngIf="item.SalesmanId != item.customer_id"
+                                                aria-hidden="true"></i>
+                                            {{item.item_id}}
+                                        </td>
+                                        <td>
+                                            <a class="td-link" href="javascript:void(0)"
+                                                [routerLink]="['/products/product-details', item.product_id]">{{item.name}}</a>
+                                        </td>
+                                        <td>{{item.units}} <i class="fa fa-edit  cursor-p" title="update quantity"
+                                                aria-hidden="true" (click)="setupdateOrderQtyByItemID(item)"></i></td>
+                                        <td>{{item.unit_cost}}</td>
+                                        <td><select [(ngModel)]="item.item_status"
+                                                (ngModelChange)='onChangeStatus($event, item)'
+                                                ngClass="{'border-danger': item.item_status == '5','border-success': item.item_status == '6', 'border-dark': [3, 4].indexOf(item.item_status) > -1}"
+                                                name="userId" class="form-control mw-200">
+                                                <option [selected]="item.item_status == obj.StatusId"
+                                                    [ngValue]="obj.StatusId" *ngFor="let obj of status">
+                                                    {{obj.StatusName}}</option>
+                                            </select></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td (click)="showItems[order.order_id] = !showItems[order.order_id]"
+                            *ngIf="!showItems[order.order_id]"><i class="fa fa-eye"></i>
+                            <br>{{order.order_details.length}} Item ke
+                            {{globalService.getTotalOfColumn(order.order_details, 'units')}} units
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

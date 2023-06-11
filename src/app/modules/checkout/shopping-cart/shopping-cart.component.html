@@ -1,0 +1,160 @@
+<app-header></app-header>
+<div class=" px-lg-0  mt-5">
+  <div class="">
+    <div class="container">
+      <div class="row" *ngIf="cart.length > 0">
+        <div class="col-lg-12 bg-white rounded shadow-sm ">
+          <div class="card shopping-cart">
+            <div class="card-header bg-dark text-light">
+              <strong>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                Shopping Cart
+              </strong>
+              <a routerLink="/" class="btn btn-outline-info btn-md pull-right mt-2">Continue shopping</a>
+              <div class="clearfix">
+
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="col-12 text-right clearfix">
+                <button class="btn btn-sm btn-secondary" (click)="clearCart(1)">Clear Cart</button>
+              </div>
+              <div class="row" *ngFor="let product of cart">
+                <div class="col-12 text-center">
+                  <hr>
+                </div>
+                <div class="col-12 col-sm-12 col-md-2 text-center">
+                  <a href="javascript:void(0);"
+                      [routerLink]="['/products/product-details', product['product_id']]">
+                      <img class="img-responsive cursor-p" [src]="product.PrimaryImage" alt="product.Name" height="80">
+                    </a>
+                </div>
+                <div class="col-12 text-sm-center col-xs-12 text-md-left col-md-5">
+                  <h6 class="product-name"><a href="javascript:void(0);"
+                      [routerLink]="['/products/product-details', product['product_id']]">
+                      {{product.Name}}
+                    </a>
+                  </h6>
+                  <dl class="param param-inline small">
+                    <dt>Department: </dt>
+                    <dd><span class="badge purple mr-1">{{product.DepartmentName}}</span></dd>
+                  </dl>
+                  <dl class="param param-inline small">
+                    <!-- <dt>Min Qty: </dt>
+                    <dd><span class="badge green mr-1">{{product.min_quantity}}</span></dd> -->
+                    <dt>Max Qty: </dt>
+                    <dd><span class="badge green mr-1">{{product.max_quantity}}</span></dd>
+                  </dl>
+                  <dl class="param param-inline small">
+                  </dl>
+                  <dl class="param param-inline small">
+                    <dt>Category: </dt>
+                    <dd> <span class="badge blue mr-1">{{product.CategoryName}}</span></dd>
+                  </dl>
+                </div>
+                <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                  <div class="col-4 col-xs-5 col-md-6 text-md-right" style="padding-top: 5px">
+                    <div class="price-wrap">
+                      <var class="price">&#8377; {{(product.Price * product.Quantity)}}</var>
+                      <small class="text-muted">(&#8377; {{product.Price}} each)</small>
+                    </div>
+                  </div>
+                  <div class="col-4 col-xs-4 col-md-4">
+                    <div class="quantity">
+                      <input type="button" value="+" class="plus"
+                        (click)="onUpdateQuantity(1,  product.ProductId, $event)">
+                      <input type="number" step="1" [max]="product.max_quantity" [min]="product.min_quantity"
+                        [(ngModel)]="product.Quantity" (input)="onUpdateQuantity(2,  product.ProductId, $event)"
+                        title="Qty" class="qty" size="4">
+                      <input type="button" value="-" class="minus" [disabled]="product.Quantity == 1"
+                        (click)="onUpdateQuantity(0, product.ProductId, $event)">
+                    </div>
+                  </div>
+                  <div class="col-2 col-xs-2 col-md-2 text-right">
+                    <button type="button" class="btn btn-outline-danger btn-xs"
+                      (click)="onRemoveProductsFromCart(product.ProductId)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- END PRODUCT -->
+            </div>
+            <div class="card-footer">
+              <div class="pull-right mt-2" style="margin: 10px">
+                <div class="pull-left" style="margin: 17px" *ngIf="total >= 500">
+                  Total price: <b>&#8377; {{total}}</b>
+                </div>
+                <div class="pull-left" style="margin: 17px" *ngIf="total < 500">
+                  <span class="badge orange mr-1">Alert: Total price per order should be atleast Rs. 500 </span>
+                </div>
+                <button class="btn btn-success" *ngIf="total >= 500 && user && user.Role > 8"
+                  routerLink="/checkout/payment-information" role="button">Checkout </button>
+                <button class="btn btn-success" *ngIf=" user && user.Role <= 8"
+                  routerLink="/checkout/payment-information" role="button">Place Order </button>
+                <a routerLink="/" class="btn btn-outline-info btn-md pull-left">Continue shopping</a>
+                <a routerLink="/customer/login" [queryParams]="{url: '/checkout/payment-information'}"
+                  class="btn btn-primary btn-md pull-left" *ngIf="!user.Role">Checkout</a>
+                <!-- <app-paypal-checkout [totalAmount]="total" class="pull-right mt-2"></app-paypal-checkout> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="cart.length == 0">
+        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+          <div class="jumbotron text-xs-center">
+            <h1 class="display-3">Oops!</h1>
+            <p class="lead">No Products Found in Cart</p>
+            <hr>
+            <p>
+              Please, Add Products to Cart
+            </p>
+            <p class="lead">
+              <a class="btn btn-success " routerLink="/" role="button">Our Products</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row pb-5 px-4 bg-white rounded shadow-sm">
+            <div class="col-lg-6">
+               <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
+              <div class="p-4">
+                <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+                <div class="input-group mb-4 border rounded-pill p-2">
+                  <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+                  <div class="input-group-append border-0">
+                    <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+                  </div>
+                </div>
+              </div> 
+              <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
+              <div class="p-4">
+                <p class="font-italic mb-4">If you have some information for the seller you can leave them in the box below</p>
+                <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+              <div class="p-4">
+                <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+                <ul class="list-unstyled mb-4">
+                  <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>&#8377; 390.00</strong></li>
+                  <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>&#8377; 10.00</strong></li>
+                  <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>&#8377; 0.00</strong></li>
+                  <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                    <h5 class="font-weight-bold">&#8377; 400.00</h5>
+                  </li>
+                </ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+              </div>
+            </div>
+          </div>
+     -->
+    </div>
+  </div>
+  <!-- End -->
+
+</div>

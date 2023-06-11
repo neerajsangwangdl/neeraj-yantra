@@ -1,0 +1,405 @@
+<app-header></app-header>
+
+<section class="register-block ">
+    <div class="container">
+        <div class="row register-sec mt-5">
+            <div class="col-md-12 register-sec pb-0 pt-0">
+                <div class="form-group " *ngIf="customerList && customerList.length">
+                    <label for="userId" class="text-uppercase fw-bold">Select Product: </label>
+                    <ng-multiselect-dropdown class="w-100" [(ngModel)]="SelectedProduct"
+                        [placeholder]="'Select Product to edit'" [settings]="productListDropdownSettings"
+                        [data]="productList" (onFilterChange)="searchModelChanged.next($event)"
+                        (onSelect)="onProductSelect($event)">
+                    </ng-multiselect-dropdown>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="username" class="">Search Product {{addNew ? 'To Insert New Stock' : 'To Update ExistingStock'}}: </label>
+                    <input type="text" class="form-control" [(ngModel)]='searchText'
+                        (ngModelChange)='searchModelChanged.next($event)' />
+                    <hr>
+                </div>
+                <select name="ProductDetail" [(ngModel)]='product' (ngModelChange)='patchProductForm()'
+                    class="form-control">
+                    <option value="">Search Product to select</option>
+                    <option [selected]="item == product" [ngValue]="item" *ngFor="let item of productList">id:
+                        {{item.ProductId}}/
+                        {{item.child_of ? 'Farzi' : item.Name}}/ Rs.{{item.Price}}/ Product Code: {{item.product_code}}
+                    </option>
+                </select> -->
+                <h2 class="text-center text-uppercase"> {{addNew ? 'Add New Stock' : 'Update Existing Stock'}} </h2>
+                <h2 class="text-center text-warning" *ngIf="product">
+                    <p class="text-primary">you are editing </p> "{{product.Name}}"
+                </h2>
+                <!-- <button *ngIf="product && !product.child_of" (click)="GlobalHttpService.saveChildProduct(product)"
+                    class="btn btn-danger float-left">Add Farzi Product</button> -->
+            </div>
+            <form class="register-form col-md-12" [formGroup]="ProductInsertForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <div class="form-group ">
+                            <label for="FirstName" class="text-uppercase" placement="top"
+                                ngbTooltip="Product ka Naam">Product Name </label>
+                            <input type="text" class="form-control is-invalid" formControlName="name"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.name.errors }">
+
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">Name is required</div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group ">
+                            <label for="alternate_name" class="text-uppercase" placement="top"
+                                ngbTooltip="Vo Naam jo public logo ko nhi dikhana hai">Alternate Name </label>
+                            <input type="text" class="form-control is-invalid" formControlName="alternate_name"
+                                class="form-control" [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.alternate_name.errors }">
+                            <div *ngIf="submitted && f.alternate_name.errors" class="invalid-feedback">
+                                <div *ngIf="f.alternate_name.errors.required">Alternate Name is required</div>
+                            </div>
+                        </div> -->
+                        <!-- <div class="form-group">
+                            <label for="CanSeeRole" class="text-uppercase" placement="top"
+                                ngbTooltip="jo role is product ko dekh sakte hai. role id 1 se 10 m se. 10 for public user. 1 for admin only. 8 for admin and salesman">Can
+                                See Role </label>
+                            <input type="number" class="form-control" formControlName="CanSeeRole" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.CanSeeRole.errors }">
+                            <div *ngIf="submitted && f.CanSeeRole.errors" class="invalid-feedback">
+                                <div *ngIf="f.CanSeeRole.errors.required">Can See Role is required</div>
+                                <div *ngIf="f.CanSeeRole.errors.max || f.CanSeeRole.errors.min">Min value is 1 and Max
+                                    is 10</div>
+                            </div>
+                        </div> -->
+                        <!-- <div class="form-group">
+                            <label for="DisplayPriority" class="text-uppercase" placement="top"
+                                ngbTooltip="ki user ko iska rank kya dikhega">Display Priority </label>
+                            <input type="number" class="form-control" formControlName="DisplayPriority"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.DisplayPriority.errors }">
+                            <div *ngIf="submitted && f.DisplayPriority.errors" class="invalid-feedback">
+                                <div *ngIf="f.DisplayPriority.errors.required">Display Priority is required</div>
+                                <div *ngIf="f.DisplayPriority.errors.max || f.DisplayPriority.errors.min">Min value is 1
+                                    and Max is infinity</div>
+                            </div>
+                        </div> -->
+                        <!-- <div class="form-group">
+                            <label for="DiscountPercentage" class="text-uppercase" placement="top"
+                                ngbTooltip="agar is product pe koi discount hai to in %">Discount Percentage </label>
+                            <input type="number"  class="form-control" formControlName="DiscountPercentage"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.DiscountPercentage.errors }">
+                            <div *ngIf="submitted && f.DiscountPercentage.errors" class="invalid-feedback">
+                                <div *ngIf="f.DiscountPercentage.errors.required">Discount Percentage is required</div>
+                                <div *ngIf="f.DiscountPercentage.errors.max || f.DiscountPercentage.errors.min">Min
+                                    value is 0 and Max is 10</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_quantity" class="text-uppercase" placement="top"
+                                ngbTooltip="max qty a user can buy for this product">max quantity </label>
+                            <input type="number" class="form-control" formControlName="max_quantity"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.max_quantity.errors }">
+                            <div *ngIf="submitted && f.max_quantity.errors" class="invalid-feedback">
+                                <div *ngIf="f.max_quantity.errors.required">max quantity is required</div>
+                                <div *ngIf="f.max_quantity.errors.max || f.max_quantity.errors.min">Min value is 1 and
+                                    Max is 1000</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="min_quantity" class="text-uppercase" placement="top"
+                                ngbTooltip="min qty a user can buy for this product">min quantity </label>
+                            <input type="number" class="form-control" formControlName="min_quantity"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.min_quantity.errors }">
+                            <div *ngIf="submitted && f.min_quantity.errors" class="invalid-feedback">
+                                <div *ngIf="f.min_quantity.errors.required">min quantity is required</div>
+                                <div *ngIf="f.min_quantity.errors.max || f.min_quantity.errors.min">Min value is 1 and
+                                    Max is 1000</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DepartmentId" class="text-uppercase" placement="top"
+                                ngbTooltip="kis Department ka product hai ye">Department </label>
+                            <input type="text" class="form-control" formControlName="DepartmentId" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.DepartmentId.errors }">
+                            <div *ngIf="submitted && f.DepartmentId.errors" class="invalid-feedback">
+                                <div *ngIf="f.DepartmentId.errors.required">Department is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="CategoryId" class="text-uppercase" placement="top"
+                                ngbTooltip="kis Category ka product hai ye">Category</label>
+                            <input type="text" class="form-control" formControlName="CategoryId" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.CategoryId.errors }">
+                            <div *ngIf="submitted && f.CategoryId.errors" class="invalid-feedback">
+                                <div *ngIf="f.CategoryId.errors.required">Category is required</div>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="form-group">
+                            <label for="ImageWidth" class="text-uppercase" placement="top"
+                                ngbTooltip="Image width. 300 is good for product image">Image Width </label>
+                            <input type="text" class="form-control" formControlName="ImageWidth" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.ImageWidth.errors }">
+                            <div *ngIf="submitted && f.ImageWidth.errors" class="invalid-feedback">
+                                <div *ngIf="f.ImageWidth.errors.required">Image Width is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ImageHeight" class="text-uppercase" placement="top"
+                                ngbTooltip="Image Height, width or height m se ek ko auto rakho">Image Height </label>
+                            <input type="text" class="form-control" formControlName="ImageHeight" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.ImageHeight.errors }">
+                            <div *ngIf="submitted && f.ImageHeight.errors" class="invalid-feedback">
+                                <div *ngIf="f.ImageHeight.errors.required">Image Height is required</div>
+                            </div>
+                        </div> -->
+
+                        <div class="form-group ">
+                            <label for="FirstName" class="text-uppercase" placement="top"
+                                ngbTooltip="Product ka Video Link">YouTube Video Link</label>
+                            <input type="text" formControlName="videolink" class="form-control"
+                                [ngClass]="{ 'border border-danger': submitted && f.videolink.errors }">
+                            <div *ngIf="submitted && f.videolink.errors" class="invalid-feedback">
+                                <div>Video Link is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="productId">
+                            <label for="IsActive" class="text-uppercase" placement="top"
+                                ngbTooltip="Active hai kya, Test krne k liye no kro">IsActive </label>
+                            <select id="" class="form-control " formControlName="IsActive" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.IsActive.errors }">
+                                <option value="0">In active</option>
+                                <option value="1">Active</option>
+                            </select>
+                            <div *ngIf="submitted && f.IsActive.errors" class="invalid-feedback">
+                                <div *ngIf="f.IsActive.errors.required">Is Active is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dhc_category" class="text-uppercase" placement="top"
+                                ngbTooltip="delivery charges">Delivery Charges Category </label>
+                            <select id="" class="form-control" formControlName="dhc_category" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f['dhc_category'].errors }">
+                                <option value="0">Free</option>
+                                <option value="1">5 percent</option>
+                            </select>
+                            <div *ngIf="submitted && f['dhc_category'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dhc_category'].errors.required">This is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Tags" class="text-uppercase" placement="top"
+                                ngbTooltip="Tags jisse user search kre to ye product uski search m aaye. space deke daldo sare tags">Search
+                                Tags
+                            </label>
+                            <input type="text" class="form-control" formControlName="Tags" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f['Tags'].errors }">
+                        </div>
+                        <div class="form-group">
+                            <label for="stock" class="text-uppercase" placement="top" ngbTooltip="rate">stock </label>
+                            <input type="number" class="form-control" formControlName="stock" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.stock.errors }">
+                            <div *ngIf="submitted && f.stock.errors" class="invalid-feedback">
+                                <div *ngIf="f.stock.errors.required">stock is required</div>
+                                <div *ngIf=" f.stock.errors.min">Min value is 1 for new and 0 for old product</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newstock" class="text-uppercase" placement="top" ngbTooltip="rate">new stock
+                            </label>
+                            <input type="number" class="form-control" formControlName="newstock" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.newstock.errors }">
+                            <div *ngIf="submitted && f.newstock.errors" class="invalid-feedback">
+                                <div *ngIf="f.newstock.errors.required">new stock is required</div>
+                                <div *ngIf=" f.newstock.errors.min">Min value is 0</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <!-- <div class="form-group">
+                            <label for="ModelName" class="text-uppercase" placement="top" ngbTooltip="model name">Model
+                                Name </label>
+                            <input type="text" class="form-control" formControlName="ModelName" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.ModelName.errors }">
+                            <div *ngIf="submitted && f.ModelName.errors" class="invalid-feedback">
+                                <div *ngIf="f.ModelName.errors.required">Model Name is required</div>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label for="SubCategoryId" class="text-uppercase" placement="top"
+                                ngbTooltip="kis SubCategory ka product hai ye">SubCategory </label>
+                            <select id="" class="form-control" formControlName="SubCategoryId" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.SubCategoryId.errors }">
+                                <option [selected]="item.SubcategoryId == f.SubCategoryId" [value]="item.SubcategoryId"
+                                    *ngFor="let item of filteredSubCategoryList">
+                                    {{item.Name}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.SubCategoryId.errors" class="invalid-feedback">
+                                <div *ngIf="f.SubCategoryId.errors.required">SubCategory is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="text-uppercase" placement="top"
+                                ngbTooltip="description is product ka">Description </label>
+                            <input type="text" class="form-control" formControlName="description" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.description.errors }">
+                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                <div *ngIf="f.description.errors.required">Description is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="price" class="text-uppercase" placement="top" ngbTooltip="rate">price </label>
+                            <input type="number" class="form-control" formControlName="price" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.price.errors }">
+                            <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                                <div *ngIf="f.price.errors.required">price is required</div>
+                                <div *ngIf=" f.price.errors.min">Min value is 1</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="landing_rate" class="text-uppercase" placement="top" ngbTooltip="rate">landing
+                            </label>
+                            <input type="number" class="form-control" formControlName="landing_rate"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.landing_rate.errors }">
+                            <div *ngIf="submitted && f.landing_rate.errors" class="invalid-feedback">
+                                <div *ngIf="f.landing_rate.errors.required">landing_rate is required</div>
+                                <div *ngIf=" f.landing_rate.errors.min">Min value is 1 or leave it empty</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newprice" class="text-uppercase" placement="top" ngbTooltip="new rate">newprice
+                            </label>
+                            <input type="number" class="form-control" formControlName="newprice" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.newprice.errors }">
+                            <div *ngIf="submitted && f.newprice.errors" class="invalid-feedback">
+                                <div *ngIf="f.newprice.errors.required">newprice is required</div>
+                                <div *ngIf=" f.newprice.errors.min">Min value is 1</div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="product_code" class="text-uppercase" placement="top"
+                                ngbTooltip="product code">product code</label>
+                            <input type="text" class="form-control" formControlName="product_code" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.product_code.errors }">
+                            <div *ngIf="submitted && f.product_code.errors" class="invalid-feedback">
+                                <div *ngIf="f.product_code.errors.required">product code is required</div>
+                            </div>
+                        </div> -->
+                        <!-- <div class="form-group">
+                            <label for="SellerDetail" class="text-uppercase" placement="top"
+                                ngbTooltip="kis seller ka hai. select user from dropdown">Seller Detail </label>
+                            <select formControlName="SellerDetail" name="SellerDetail" class="form-control">
+                                <option [selected]="item.customer_id == f.SellerDetail" [ngValue]="item.customer_id"
+                                    *ngFor="let item of customerList">{{item.name}}/
+                                    {{item.address_1}}/ {{item.mob_phone}}/ </option>
+                            </select>
+                            <div *ngIf="submitted && f.SellerDetail.errors" class="invalid-feedback">
+                                <div *ngIf="f.SellerDetail.errors.required">Seller Detail is required</div>
+                            </div>
+                        </div> -->
+
+
+                        <div class="form-group">
+                            <label for="WarrantyInDays" class="text-uppercase" placement="top"
+                                ngbTooltip="Any warranty for this product?">Warranty In Days</label>
+                            <input type="number" class="form-control" formControlName="WarrantyInDays"
+                                class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f['WarrantyInDays'].errors }">
+                            <div *ngIf="submitted && f['WarrantyInDays'].errors" class="invalid-feedback">
+                                <div *ngIf="f['WarrantyInDays'].errors.required">Warranty In Days is required</div>
+                                <div *ngIf="f['WarrantyInDays'].errors.min">Min value is 0</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image" class="text-uppercase" placement="top" ngbTooltip="image">Image
+                            </label>
+                            <input type="file" name="image" class="form-control"
+                                [ngClass]="{ 'is-valid':submitted, 'is-invalid': submitted && f.image.errors }"
+                                accept="image/*" (change)="handleImageUpload($event);">
+                            <div *ngIf="submitted && f.image.errors" class="invalid-feedback">
+                                <div *ngIf="f.image.errors.required">Image is required</div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-check">
+                            <button class="btn btn-danger pull-right mt-2"
+                                *ngIf="submitted && ProductInsertForm.invalid">Error in the form</button>
+                            <button type="submit" class="btn btn-register pull-right mt-2"
+                                *ngIf="!submitted || !ProductInsertForm.invalid">Submit</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container mt-5" *ngIf="newstockProducts">
+        <div class="row">
+            <div class="col-md-12 register-sec pb-0 pt-0">
+                <h2 class="text-center text-uppercase">List Of New Inventory mai Jo Product Kiye Hai</h2>
+            </div>
+            <div class="col-md-3">
+                <strong>Total New Stock: <b> {{totalNewStock || 0}}</b> </strong>
+            </div>
+            <div class="col-md-3">
+                <strong>Total Amount: <b> {{totalNewAmount || 0}}</b> </strong>
+            </div>
+            <!-- <div class="col-md-4">
+                <button class="btn btn-warning pull-right text-white" (click)="applyInventory()">Apply Inventory</button>
+            </div> -->
+            <!-- <div class="col-md-12" *ngIf="pendingAmountForUser">
+                <strong>Pending Amount For {{SelectedUser.name}}:
+                    <a class="" *ngIf="orderList && orderList.length" href="javascript:void(0);">
+                        Rs. {{pendingAmountForUser}}<i class="fa fa-whatsapp ft-30" aria-hidden="true"></i>
+                    </a>
+                </strong>
+            </div> -->
+            <div class="col-md-12 table-responsive-sm">
+                <table class="table table-striped text-center ">
+                    <thead class="pink-text">
+                        <tr>
+                            <th scope="col">S No.</th>
+                            <th scope="col">product Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">P. Code</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">New Stock</th>
+                            <th scope="col">Created On</th>
+                            <!-- <th scope="col">PlacedBy</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of newstockProducts; let i = index">
+                            <th scope="row">{{i+1}} </th>
+                            <td><a class="text-primary font-weight-bold" (click)="patchInventoryProductForm(product)"
+                                    href="javascript:void(0)">{{product.product_id}} <i class="fa fa-edit"
+                                        aria-hidden="true"></i></a>
+                            </td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.product_code}}</td>
+                            <td>{{product.ModelName}}</td>
+                            <td class="font-weight-bold">{{product.newprice}}</td>
+                            <td class="font-weight-bold" (click)="updateNewInventory(product)">
+                                <a class="text-primary font-weight-bold" (click)="patchInventoryProductForm(product)"
+                                    href="javascript:void(0)">{{product.newstock}} <i class="fa fa-plus"
+                                        aria-hidden="true"></i></a>
+                            </td>
+                            <td class="font-weight-bold" (click)="deleteInventory(product.product_id)">Delete Product<i
+                                    class="fa fa-trash ft-4 cursor-p" aria-hidden="true"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5 mt-3">
+                <button class="btn btn-register pull-right text-white" (click)="applyInventory()">Apply
+                    Inventory</button>
+            </div>
+        </div>
+    </div>
+</section>

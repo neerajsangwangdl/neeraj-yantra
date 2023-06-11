@@ -1,0 +1,21 @@
+.toastr{
+    position: absolute;
+    right: 75px;
+    top: 80px;
+    button: {
+        color: #fff;
+    }
+}
+.dropdown-cart {
+    right: 0;
+    left: unset;
+}
+.dropdown-login{
+    left: unset;
+}
+.version{
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+    font-size: 12px; 
+    cursor: default;
+}
