@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { AddToCartComponent } from './add-to-cart/add-to-cart.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AppHeaderComponent } from './app-header/app-header.component';
+//import { AppHeaderComponent } from './app-header/app-header.component';
 //import { SmallCartComponent } from './app-header/small-cart/small-cart.component';
 //import { LoaderComponent } from './app-loader/app-loader.component';
 //import { AppMarqueeComponent } from './app-marquee/app-marquee.component';
@@ -26,7 +26,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
   declarations: [
     //PaginationComponent,
     //AddToCartComponent,
-    AppHeaderComponent,
+    //AppHeaderComponent,
     //SmallCartComponent,
     //LoaderComponent,
     //AppMarqueeComponent,
@@ -54,7 +54,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
     RouterModule,
     //PaginationComponent,
     //AddToCartComponent,
-    AppHeaderComponent,
+    //AppHeaderComponent,
     // SmallCartComponent,
     // LoaderComponent,
     // AppMarqueeComponent,
