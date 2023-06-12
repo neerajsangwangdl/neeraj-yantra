@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PWAAppUpdateService } from './services/pwa-service';
+//import { PWAAppUpdateService } from './services/pwa-service';
 
 @Component({
   selector: 'app-root',

@@ -9,21 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { SharedModule } from './modules/shared/shared.module';
-import { NewsLetterService } from './services/NewsLetterService/news-letter.service';
-import { PWAAppUpdateService } from './services/pwa-service';
-import { Authguard } from './services/authGuard';
-import { MasterService } from './services/master.service';
-import { GlobalHttpService } from './services/Shared/global-http.service';
-import { GlobalService } from './services/Shared/global.service';
-import { YantraInterceptor } from './services/http-interceptor';
-import { HttpApiService } from './services/http.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { HTML2PDFService } from './services/html2pdf.service';
-import { OrderService } from './services/order.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { CreditDebitService } from './services/credit-debit.service';
 import { RouterModule } from '@angular/router';
+import { UserModule } from './user/user.module';
 
 
 // import { MdCardModule } from '@angular/material';
@@ -35,17 +24,16 @@ import { RouterModule } from '@angular/router';
   
   ],
   imports: [
-    BrowserModule,
+    UserModule,
+    BrowserModule,CommonModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    SharedModule,
     ToastrModule.forRoot(),
     InfiniteScrollModule,
     RouterModule,
-    SharedModule,
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -55,10 +43,7 @@ import { RouterModule } from '@angular/router';
     }),
     
   ],
-  providers: [HTML2PDFService, HttpApiService, OrderService, MasterService, NewsLetterService, PWAAppUpdateService, Authguard, GlobalService,
-    { provide: HTTP_INTERCEPTORS, useClass: YantraInterceptor, multi: true }, DatePipe, GlobalHttpService,
-    CreditDebitService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
