@@ -12,7 +12,8 @@ import { environment } from '../environments/environment';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RouterModule } from '@angular/router';
-import { UserModule } from './user/user.module';
+import { CheckOutComponent } from './modules/check-out/check-out.component';
+import { UserModule } from './modules/user/user.module';
 
 
 // import { MdCardModule } from '@angular/material';
@@ -20,10 +21,12 @@ import { UserModule } from './user/user.module';
 @NgModule({
   declarations: [
     AppComponent,
+    CheckOutComponent,
     
   
   ],
   imports: [
+    //UserModule,
     UserModule,
     BrowserModule,CommonModule,
     AppRoutingModule,

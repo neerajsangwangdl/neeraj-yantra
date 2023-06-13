@@ -7,6 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { AddToCartComponent } from './add-to-cart/add-to-cart.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
+import { UserModule } from '../user/user.module';
+import { HeaderComponent } from './header/header.component';
+
+
 //import { AppHeaderComponent } from './app-header/app-header.component';
 //import { SmallCartComponent } from './app-header/small-cart/small-cart.component';
 //import { LoaderComponent } from './app-loader/app-loader.component';
@@ -40,18 +45,24 @@ import { RouterModule } from '@angular/router';
     //TimeAgoPipe,
     //GroupByPipe,
     //DigitOnlyDirective
+  
+    HeaderComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    UserModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    HeaderComponent,
+    
+    
     //PaginationComponent,
     //AddToCartComponent,
     //AppHeaderComponent,
