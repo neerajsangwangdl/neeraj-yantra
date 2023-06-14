@@ -7,9 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { AddToCartComponent } from './add-to-cart/add-to-cart.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-import { UserModule } from '../user/user.module';
 import { HeaderComponent } from './header/header.component';
+
+
+
 
 
 //import { AppHeaderComponent } from './app-header/app-header.component';
@@ -29,6 +30,7 @@ import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
+    HeaderComponent
     //PaginationComponent,
     //AddToCartComponent,
     //AppHeaderComponent,
@@ -45,22 +47,22 @@ import { HeaderComponent } from './header/header.component';
     //TimeAgoPipe,
     //GroupByPipe,
     //DigitOnlyDirective
-  
-    HeaderComponent
+    
+    
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    UserModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    HeaderComponent,
+    HeaderComponent
+    
     
     
     //PaginationComponent,

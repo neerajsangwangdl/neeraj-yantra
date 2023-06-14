@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, } from '@angular/router';
 import { UserModule } from './modules/user/user.module';
+import { userInfo } from 'os';
 // import { PdfMakerModule } from './modules/pdf-maker/pdf-maker.module';
 // import { Authguard } from './services/authGuard';
 
@@ -11,6 +12,7 @@ const routes: Routes = [
      loadChildren: () =>
       //import('../user/user.module').then(m => m.UserModule)
       import('./modules/user-routing.module').then(m=>UserModule)
+      //import ('./modules/shared/header/header.component').then(m =>UserModule)
    },
   // {
   //   path: 'billsaas',
