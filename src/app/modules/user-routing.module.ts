@@ -4,7 +4,7 @@ import { LoginComponent } from './user/login/login.component';
 //import { Authguard } from 'src/app/services/authGuard';
 //import { AccountComponent } from './account/account.component';
 //import { ContactusComponent } from './contactus/contactus.component';
-//import { LoginComponent } from '../user/login/login.component';
+//import { LoginComponent } from './login/login.component';
 //import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
