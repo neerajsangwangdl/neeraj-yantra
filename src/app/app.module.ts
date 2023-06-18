@@ -16,12 +16,14 @@ import { CheckOutComponent } from './modules/check-out/check-out.component';
 import { UserModule } from './modules/user/user.module';
 
 
+
 // import { MdCardModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckOutComponent,
+    
     
   
   ],
