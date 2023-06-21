@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   // otherwise redirect to root of this module
-  { path: '**', redirectTo: 'login' }
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

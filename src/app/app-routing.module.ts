@@ -13,7 +13,7 @@ const routes: Routes = [
 
 
   // otherwise redirect to home
-  { path: '**', redirectTo: 'products' }
+  { path: '**', pathMatch: 'full', redirectTo: 'customer' }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
