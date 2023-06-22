@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 //import { UserRoutingModule } from './user-routing.module';
-import { UserRoutingModule } from '../user-routing.module';
+//import { UserRoutingModule } from '../user-routing.module';
+import { UserRoutingModule } from './user-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './register/register.component';
@@ -22,6 +23,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   imports: [
     UserRoutingModule,
     SharedModule,
+    NgModule,
    NgMultiSelectDropDownModule.forRoot(),
   ],
   providers: []

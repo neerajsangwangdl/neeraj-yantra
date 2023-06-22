@@ -7,7 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { AddToCartComponent } from './add-to-cart/add-to-cart.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from './header/header.component';
+import { AppHeaderComponent } from './header/header.component';
+//import { AppHeaderComponent } from './header/header.component';
 
 
 
@@ -30,7 +31,8 @@ import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    AppHeaderComponent
+
     //PaginationComponent,
     //AddToCartComponent,
     //AppHeaderComponent,
@@ -61,7 +63,7 @@ import { HeaderComponent } from './header/header.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    HeaderComponent
+    
     
     
     

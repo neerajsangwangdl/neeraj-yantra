@@ -48,7 +48,7 @@ import { YantraInterceptor } from './services/shared/http-interceptor.service';
     ToastrModule.forRoot(),
     //InfiniteScrollModule,
     RouterModule,
-    SharedModule,
+  
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
