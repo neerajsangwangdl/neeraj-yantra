@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-//import { PdfMakerModule } from './modules/pdf-maker/pdf-maker.module';
+// import { PdfMakerModule } from './modules/pdf-maker/pdf-maker.module';
 //import { Authguard } from './services/authGuard';
 
 const routes: Routes = [

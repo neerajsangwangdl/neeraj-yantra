@@ -9,12 +9,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { RouterModule } from '@angular/router';
-import { CheckOutComponent } from './modules/check-out/check-out.component';
-import { UserModule } from './modules/user/user.module';
+import { SharedModule } from './modules/shared/shared.module';
+//import { NewsLetterService } from './services/NewsLetterService/news-letter.service';
+//import { PWAAppUpdateService } from './services/pwa-service';
+//import { Authguard } from './services/authGuard';
+//import { MasterService } from './services/master.service';
+// import { GlobalHttpService } from './services/Shared/global-http.service';
 
+import { GlobalService } from './services/shared/global.service';
+// import { YantraInterceptor } from './services/http-interceptor';
+
+import { HttpApiService } from './services/shared/http.service';
+// import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+// import { HTML2PDFService } from './services/html2pdf.service';
+// import { OrderService } from './services/order.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { CreditDebitService } from './services/credit-debit.service';
+import { RouterModule } from '@angular/router';
+import { YantraInterceptor } from './services/shared/http-interceptor.service';
 
 
 // import { MdCardModule } from '@angular/material';
@@ -22,23 +34,21 @@ import { UserModule } from './modules/user/user.module';
 @NgModule({
   declarations: [
     AppComponent,
-    CheckOutComponent,
-    
     
   
   ],
   imports: [
-    //UserModule,
-    UserModule,
-    BrowserModule,CommonModule,
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    SharedModule,
     ToastrModule.forRoot(),
-    InfiniteScrollModule,
+    //InfiniteScrollModule,
     RouterModule,
+    SharedModule,
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -48,7 +58,19 @@ import { UserModule } from './modules/user/user.module';
     }),
     
   ],
-  providers: [],
+  providers: [//HTML2PDFService, 
+    HttpApiService, 
+    //OrderService, 
+    //MasterService, 
+    //NewsLetterService, 
+    //PWAAppUpdateService, 
+    //Authguard, 
+    GlobalService,
+    { provide: HTTP_INTERCEPTORS, useClass: YantraInterceptor, multi: true }, 
+    DatePipe, 
+    //GlobalHttpService,
+    //CreditDebitService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
