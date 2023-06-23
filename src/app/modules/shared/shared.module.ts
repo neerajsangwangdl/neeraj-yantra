@@ -63,6 +63,7 @@ import { AppHeaderComponent } from './header/header.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    AppHeaderComponent
     
     
     

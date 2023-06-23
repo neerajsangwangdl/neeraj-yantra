@@ -23,7 +23,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   imports: [
     UserRoutingModule,
     SharedModule,
-    NgModule,
    NgMultiSelectDropDownModule.forRoot(),
   ],
   providers: []
