@@ -39,10 +39,7 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit() {
     // this.notificationCount = this.dataService.unreadNotificationCount;
-    this.dataService.count.subscribe((count) => (this.itemCount = count));
-    this.dataService.unreadNotificationCount.subscribe(
-      (count) => (this.notificationCount = count)
-    );
+
     // this.dataService.bagCount.subscribe(count => this.bagItemCount = count);
     this.user = this.dataService.getUserFromLocalStorage();
 
@@ -137,8 +134,8 @@ export class AppHeaderComponent implements OnInit {
     //   this.updates.activateUpdate().then(() => document.location.reload());
     // }
   }
-  clearSearch() {
-    this.dataService.searchString = '';
-    this.dataService.searchModelChanged.next('clear');
-  }
+  // clearSearch() {
+  //   this.dataService.searchString = '';
+  //   this.dataService.searchModelChanged.next('clear');
+  // }
 }

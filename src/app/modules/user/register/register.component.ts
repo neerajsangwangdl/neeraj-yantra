@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit {
     this.customerService.getDistributersList().subscribe(res => {
       this.distributersList = res['data'] as DistributersList[];
       if (this.partnerId) {
-        this.Selecteddistributers = this.globalService.ngMultiSelectModelData(this.distributersList, 'customer_id', 'name', this.partnerId)
+        //this.Selecteddistributers = this.globalService.ngMultiSelectModelData(this.distributersList, 'customer_id', 'name', this.partnerId)
       }
     })
   }
