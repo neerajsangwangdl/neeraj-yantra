@@ -1,6 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
-//import { DataService } from './Shared/data.service';
 import { DataService } from './data.service';
 @Injectable()
 export class Authguard implements CanActivate {
