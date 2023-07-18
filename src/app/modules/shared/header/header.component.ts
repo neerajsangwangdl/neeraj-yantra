@@ -111,7 +111,7 @@ export class AppHeaderComponent implements OnInit {
     // hide our user interface that shows our A2HS button
     this.showPwaButton = false;
     // Show the prompt
-    this.deferredPrompt.prompt();
+    // this.deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
     this.deferredPrompt.userChoice.then((choiceResult: { outcome: string }) => {
       if (choiceResult.outcome === 'accepted') {

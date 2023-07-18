@@ -12,8 +12,7 @@ import { HttpApiService } from 'src/app/services/shared/http.service';
 export class CustomerService {
 
   url = environment.apiUrl || localStorage.getItem('ServerUrl');
-  http: any;
-  constructor() { }
+  constructor(private http:HttpApiService) { }
 
   AddNewCustomer(customer: Customer): Observable<boolean> {
     return this.http.post(`customer/addNewCustomer`, customer);
