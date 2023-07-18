@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/services/shared/data.service';
 import { CustomerService } from '../customer.service';
+import { HttpApiService } from 'src/app/services/shared/http.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   redirectUrl: any;
   constructor(private formBuilder: FormBuilder,
     private router: Router,
+    private httpService: HttpApiService,
     private dataService: DataService,
     private route: ActivatedRoute,
     private toastr: ToastrService,

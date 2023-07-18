@@ -20,7 +20,7 @@ export class CustomerService {
 
   Login(username: string, password: string): Observable<Customer> {
     return this.http.post(`customer/authenticateLogin`, { Mobile: username, Password: password });
-    console.log(this.Login)
+    
   }
 
   Logout() {
