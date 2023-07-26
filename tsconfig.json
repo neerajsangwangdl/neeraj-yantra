@@ -9,7 +9,6 @@
     "noImplicitAny": false,
     "strict": true,
     "noImplicitOverride": true,
-    "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "noImplicitReturns": true,
